@@ -1,0 +1,43 @@
+import { Injectable } from '@nestjs/common';
+import { QuestionDto } from './dto/question.dto';
+import { PrismaService } from 'src/prismaFile/prisma.service';
+
+@Injectable()
+export class QuestionService {
+    constructor(private readonly prisma: PrismaService) { }
+
+    createMany(questions: QuestionDto[]) {
+        return this.prisma.question.createMany({
+            data: questions,
+        });
+    }
+
+    
+    async getAllQuestions() {
+        const questions = await this.prisma.question.findMany();
+
+        const shuffledQuestions = questions.map((q) => {
+            const values = Object.values(q.options as { [key: string]: string });
+
+            for (let i = values.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [values[i], values[j]] = [values[j], values[i]];
+            }
+
+            const optionKeys = ['A', 'B', 'C', 'D', 'E'];
+            const shuffledOptions = values.map((value, idx) => ({
+                key: optionKeys[idx],
+                value,
+            }));
+
+            return {
+                id: q.id,
+                text: q.text,
+                correct: q.correct,
+                options: shuffledOptions,
+            };
+        });
+
+        return shuffledQuestions;
+    }
+}
