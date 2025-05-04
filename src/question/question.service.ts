@@ -12,9 +12,15 @@ export class QuestionService {
         });
     }
 
-    
+
     async getAllQuestions() {
         const questions = await this.prisma.question.findMany();
+
+
+        for (let i = questions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [questions[i], questions[j]] = [questions[j], questions[i]];
+        }
 
         const shuffledQuestions = questions.map((q) => {
             const values = Object.values(q.options as { [key: string]: string });

@@ -8,11 +8,11 @@ export class QuestionController {
 
     @Post('many')
     async createMany(@Body() questions: QuestionDto[]) {
-        return this.questionService.createMany(questions);
+        return await this.questionService.createMany(questions);
     }
 
     @Get()
     async getAllQuestions() {
-        return this.questionService.getAllQuestions();
+        return await this.questionService.getAllQuestions();
     }
 }
