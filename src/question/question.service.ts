@@ -6,10 +6,13 @@ import { PrismaService } from 'src/prismaFile/prisma.service';
 export class QuestionService {
     constructor(private readonly prisma: PrismaService) { }
 
+    async deleteMany(): Promise<void> {
+        // Implement the logic to delete all questions
+        console.log('Deleting all questions...');
+    }
+
     createMany(questions: QuestionDto[]) {
-        return this.prisma.question.createMany({
-            data: questions,
-        });
+        return this.prisma.question.createMany;
     }
 
 

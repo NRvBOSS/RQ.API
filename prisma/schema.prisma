@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./node_modules/@prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -8,24 +8,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  quizzes  Quiz[]
+  results  Result[]
+}
+
+model Quiz {
+  id        String     @id @default(uuid())
+  title     String
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  questions Question[]
+  results   Result[]
+  createdAt DateTime   @default(now())
+}
+
 model Question {
   id      Int    @id @default(autoincrement())
   text    String
   options Json
   correct String
-}
-
-model User {
-  id       String   @id @default(uuid())
-  email    String   @unique
-  password String
-  results  Result[]
+  quizId  String
+  quiz    Quiz   @relation(fields: [quizId], references: [id])
 }
 
 model Result {
   id        String   @id @default(uuid())
   userId    String
+  quizId    String
   user      User     @relation(fields: [userId], references: [id])
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
   score     Int
   createdAt DateTime @default(now())
 }
