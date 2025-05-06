@@ -1,5 +1,6 @@
 
 import {
+    BadRequestException,
     Body,
     Controller,
     Get,
@@ -17,9 +18,13 @@ export class AuthController {
     constructor(private authService: AuthService) { }
 
     @HttpCode(HttpStatus.OK)
+    // auth.controller.ts
     @Post('login')
-    signIn(@Body() signInDto: Record<string, any>) {
-        return this.authService.signIn(signInDto.username, signInDto.password);
+    async login(@Body() body: { email: string, password: string }) {
+        if (!body.email || !body.password) {
+            throw new BadRequestException('Email and password are required');
+        }
+        return this.authService.signIn(body.email, body.password);
     }
 
     @HttpCode(HttpStatus.OK)

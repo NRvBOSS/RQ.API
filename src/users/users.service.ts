@@ -1,22 +1,41 @@
 import { Injectable } from '@nestjs/common';
-
-export type User = any;
+import { PrismaService } from 'src/prismaFile/prisma.service';
 
 @Injectable()
 export class UsersService {
-    private users: User[] = []; // Initialize users as an empty array
+    constructor(private readonly prisma: PrismaService) { }
 
-    async create(user: { username: string; email: string, password: string }): Promise<any> {
-        // Implement the logic to create a user
-        return {
-            userId: Math.random().toString(36).substring(7), // Example userId
-            username: user.username,
-            email: user.email,
-            password: user.password, // Ensure to hash the password in a real implementation
-        };
+    async getAllUsers() {
+        return await this.prisma.user.findMany();
     }
 
-    async findOne(email: string): Promise<User | undefined> {
-        return this.users.find(user => user.email === email)
+    async deleteMany() {
+        return await this.prisma.user.deleteMany();
+    }
+
+    async create(user: { username: string; email: string; password: string }) {
+        return this.prisma.user.create({
+            data: {
+                username: user.username,
+                email: user.email,
+                password: user.password,
+            },
+        });
+    }
+
+    async findByEmail(email: string) {
+        if (!email) {
+            console.log('Email is empty!'); // Debug üçün
+            return null;
+        }
+
+        console.log('Searching for email:', email); // Debug üçün
+
+        const user = await this.prisma.user.findUnique({
+            where: { email: email },
+        });
+
+        console.log('Found user:', user); // Debug üçün
+        return user;
     }
 }

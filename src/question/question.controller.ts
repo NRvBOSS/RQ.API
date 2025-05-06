@@ -16,7 +16,6 @@ export class QuestionController {
         return await this.questionService.deleteMany();
     }
 
-
     @Get()
     async getAllQuestions() {
         return await this.questionService.getAllQuestions();
