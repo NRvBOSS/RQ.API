@@ -8,7 +8,7 @@ export class QuestionController {
 
     @Post('many')
     async createMany(@Body() questions: QuestionDto[]) {
-        return await this.questionService.createMany(questions);
+        return this.questionService.createMany(questions);
     }
 
     @Delete('delete')
