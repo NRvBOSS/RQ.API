@@ -11,7 +11,7 @@ export class QuestionService {
         console.log('Deleting all questions...');
     }
 
-    createMany(questions: QuestionDto[]) {
+    createMany(_questions: QuestionDto[]) {
         return this.prisma.question.createMany;
     }
 
