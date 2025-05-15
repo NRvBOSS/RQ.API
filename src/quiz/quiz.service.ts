@@ -7,6 +7,6 @@ export class QuizService {
 
     async getAllQuizzes(): Promise<void> {
         const quizzes = await this.prisma.quiz.findMany();
-        return quizzes;
+        return;
     }
 }

@@ -13,15 +13,12 @@ model User {
   username String   @unique
   email    String   @unique
   password String
-  quizzes  Quiz[]
   results  Result[]
 }
 
 model Quiz {
   id        String     @id @default(uuid())
-  title     String
-  userId    String
-  user      User       @relation(fields: [userId], references: [id])
+  title     String     @unique
   questions Question[]
   results   Result[]
   createdAt DateTime   @default(now())
