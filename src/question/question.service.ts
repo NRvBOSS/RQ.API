@@ -25,6 +25,8 @@ export class QuestionService {
     }
 
 
+
+
     async getAllQuestions() {
         const questions = await this.prisma.question.findMany();
 
