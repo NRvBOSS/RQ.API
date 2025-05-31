@@ -19,7 +19,6 @@ model User {
 model Quiz {
   id        String     @id @default(uuid())
   title     String     @unique
-  questions Question[]
   results   Result[]
   createdAt DateTime   @default(now())
 }
@@ -29,8 +28,6 @@ model Question {
   text    String
   options Json
   correct String
-  quizId  String
-  quiz    Quiz   @relation(fields: [quizId], references: [id])
 }
 
 model Result {

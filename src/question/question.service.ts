@@ -11,8 +11,17 @@ export class QuestionService {
         console.log('Deleting all questions...');
     }
 
-    createMany(_questions: QuestionDto[]) {
-        return this.prisma.question.createMany;
+    async createMany(questions: QuestionDto[]) {
+        const formattedQuestions = questions.map((q) => ({
+            text: q.text,
+            options: q.options,
+            correct: q.correct,
+            id: Number(q.id), // Ensure id is a primitive number
+        }));
+
+        return this.prisma.question.createMany({
+            data: formattedQuestions,
+        });
     }
 
 
