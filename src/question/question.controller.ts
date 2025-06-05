@@ -17,8 +17,8 @@ export class QuestionController {
 
 
     @Delete('delete')
-    async deleteAll() {
-        return await this.questionService.deleteMany();
+    async delete() {
+        return await this.questionService.deleteQuestions();
     }
 
     @Get()
